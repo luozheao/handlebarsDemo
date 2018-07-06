@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title> 
+</head>
+<body>
+
+</body>
+<script src="jquery.min.js"></script>
+<script src="handlebars.js"></script>
+<script type="text/template" id="test">
+
+   <div>{{name}}</div>
+   <div>{{age}}</div>
+       {{#if program}}
+
+           {{#each program}}
+           <div>{{this}}</div>
+           {{/each}}
+       {{else}}
+
+           <div>aaaaa</div>
+       {{/if}}
+
+{{!我是注释}}
+   {{debug lover}}
+            <div >{{lover.age}}</div>
+            <div >{{lover.sex}}</div>
+
+
+
+
+</script>
+<script>
+
+
+  $(function () {
+      (function($) {
+          var compiled = {};
+          $.fn.handlebars = function(template, data) {
+              if (template instanceof jQuery) {
+                  template = $(template).html();
+              }
+              compiled[template] = Handlebars.compile(template);
+              this.html(compiled[template](data));
+          };
+      })(jQuery);
+
+      Handlebars.registerHelper("debug", function(optionalValue) {
+          console.log("Current Context");
+          console.log("====================");
+          console.log(this);
+          if (optionalValue) {
+              console.log("Value");
+              console.log("====================");
+              console.log(optionalValue);
+          }
+      });
+
+      var data={
+          name:'luozheao',
+          age:18,
+          program1:[
+              1,2,3
+          ],
+          lover:{
+              age:3,
+              sex:'woman'
+          }
+
+      }
+      $('body').handlebars($('#test'), data);
+
+
+  })
+</script>
+</html>
